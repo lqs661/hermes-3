@@ -111,6 +111,7 @@ set(HERMES_SOURCES
     src/transform.cxx
     src/vorticity.cxx
     include/adas_reaction.hxx
+    include/adas_boron.hxx
     include/adas_carbon.hxx
     include/adas_neon.hxx
     include/amjuel_helium.hxx

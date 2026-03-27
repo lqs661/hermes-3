@@ -24,6 +24,7 @@
 #include "revision.hxx"
 
 #include "include/adas_carbon.hxx"
+#include "include/adas_boron.hxx"
 #include "include/adas_lithium.hxx"
 #include "include/adas_neon.hxx"
 #include "include/amjuel_helium.hxx"
