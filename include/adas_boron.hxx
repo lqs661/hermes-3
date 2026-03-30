@@ -12,7 +12,7 @@
 /// Conversion 1 kJ mol^-1 = 1.0364e-2 eV
 /// These are added (removed) from the electron energy during recombination (ionisation)
 constexpr std::array<BoutReal, 5> boron_ionisation_energy{
-    8.30, 25.15, 37.93, 259.37, 340.22};
+    8.30, 25.16, 37.93, 259.37, 340.22};
 
 /// The name of the species.
 ///
@@ -36,7 +36,7 @@ constexpr std::initializer_list<char> boron_species_name<0>{'b'};
 template <int level>
 struct ADASBoronIonisation : public OpenADAS {
   ADASBoronIonisation(std::string, Options& alloptions, Solver*)
-      : OpenADAS(alloptions["units"], "scd96_b.json", "plt96_b.json",
+      : OpenADAS(alloptions, "scd89_b.json", "plt89_b.json",
                  boron_species_name<level>, boron_species_name<level + 1>, level,
                  -boron_ionisation_energy[level]) {}
 
@@ -56,7 +56,7 @@ private:
 template <int level>
 struct ADASBoronRecombination : public OpenADAS {
   ADASBoronRecombination(std::string, Options& alloptions, Solver*)
-      : OpenADAS(alloptions["units"], "acd96_b.json", "prb96_b.json",
+      : OpenADAS(alloptions, "acd89_b.json", "prb89_b.json",
                  boron_species_name<level + 1>, boron_species_name<level>, level,
                  boron_ionisation_energy[level]) {}
 
@@ -75,7 +75,7 @@ private:
 template <int level, char Hisotope>
 struct ADASBoronCX : public OpenADASChargeExchange {
   ADASBoronCX(std::string, Options& alloptions, Solver*)
-      : OpenADASChargeExchange(alloptions["units"], "ccd96_b.json",
+      : OpenADASChargeExchange(alloptions, "ccd89_b.json",
                                boron_species_name<level + 1>, {Hisotope},
                                boron_species_name<level>, {Hisotope, '+'}, level) {}
 

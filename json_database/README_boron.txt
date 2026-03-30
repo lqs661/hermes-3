@@ -23,3 +23,8 @@ Regenerate JSON from .dat with `python adas_dat_to_json.py` in this folder.
 
 If these files are missing, boron reactions will throw at runtime when
 the corresponding component is created.
+
+OpenADAS JSON paths are resolved like Amjuel: by default the directory
+json_database next to the Hermes repository (compile-time __FILE__ path),
+not the shell current working directory. Override with the root option
+json_database_dir if you install binaries without the full source tree.

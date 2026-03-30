@@ -40,7 +40,7 @@ constexpr std::initializer_list<char> neon_species_name<0>{'n', 'e'};
 template <std::size_t level>
 struct ADASNeonIonisation : public OpenADAS {
   ADASNeonIonisation(std::string, Options& alloptions, Solver*)
-      : OpenADAS(alloptions["units"], "scd96_ne.json", "plt96_ne.json",
+      : OpenADAS(alloptions, "scd96_ne.json", "plt96_ne.json",
                  neon_species_name<level>, neon_species_name<level + 1>, level,
                  -neon_ionisation_energy[level]) {}
 
@@ -63,7 +63,7 @@ template <std::size_t level>
 struct ADASNeonRecombination : public OpenADAS {
   /// @param alloptions  The top-level options. Only uses the ["units"] subsection.
   ADASNeonRecombination(std::string, Options& alloptions, Solver*)
-      : OpenADAS(alloptions["units"], "acd96_ne.json", "prb96_ne.json",
+      : OpenADAS(alloptions, "acd96_ne.json", "prb96_ne.json",
                  neon_species_name<level + 1>, neon_species_name<level>, level,
                  neon_ionisation_energy[level]) {}
 
@@ -83,7 +83,7 @@ template <std::size_t level, char Hisotope>
 struct ADASNeonCX : public OpenADASChargeExchange {
   /// @param alloptions  The top-level options. Only uses the ["units"] subsection.
   ADASNeonCX(std::string, Options& alloptions, Solver*)
-      : OpenADASChargeExchange(alloptions["units"], "ccd89_ne.json",
+      : OpenADASChargeExchange(alloptions, "ccd89_ne.json",
                                neon_species_name<level + 1>, {Hisotope},
                                neon_species_name<level>, {Hisotope, '+'}, level) {}
 
