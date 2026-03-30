@@ -389,6 +389,9 @@ void BraginskiiCollisions::transform_impl(GuardedOptions& state) {
 
         } else {
           // species1 charged, species2 neutral
+          if (!ion_neutral) {
+            continue;
+          }
 
           // Scattering of charged species 1
           // Neutral density
