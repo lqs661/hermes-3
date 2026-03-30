@@ -237,4 +237,40 @@ void OpenADASChargeExchange::calculate_rates(GuardedOptions&& electron,
     subtract(from_B["energy_source"], energy_exchange);
     add(to_B["energy_source"], energy_exchange);
   }
+
+  // Collision frequencies for neutral_parallel_diffusion (afn / multispecies) and
+  // Braginskii-style uses; mirror HydrogenChargeExchange: nu_i = R / n_partner.
+  const Field3D N_to_A = GET_VALUE(Field3D, to_A["density"]);
+  const Field3D N_to_B = GET_VALUE(Field3D, to_B["density"]);
+
+  const Field3D nu_on_from_A = filledFrom(reaction_rate, [&](auto& i) {
+    return reaction_rate[i] / softFloor(Nb[i], 1e-10);
+  });
+  const Field3D nu_on_from_B = filledFrom(reaction_rate, [&](auto& i) {
+    return reaction_rate[i] / softFloor(Na[i], 1e-10);
+  });
+  const Field3D nu_on_to_A = filledFrom(reaction_rate, [&](auto& i) {
+    return reaction_rate[i] / softFloor(N_to_B[i], 1e-10);
+  });
+  const Field3D nu_on_to_B = filledFrom(reaction_rate, [&](auto& i) {
+    return reaction_rate[i] / softFloor(N_to_A[i], 1e-10);
+  });
+
+  add(from_A["collision_frequency"], nu_on_from_A);
+  add(from_B["collision_frequency"], nu_on_from_B);
+  add(to_A["collision_frequency"], nu_on_to_A);
+  add(to_B["collision_frequency"], nu_on_to_B);
+
+  set(from_A["collision_frequencies"]
+          [from_A.name() + "_" + from_B.name() + std::string("_cx")],
+      nu_on_from_A);
+  set(from_B["collision_frequencies"]
+          [from_B.name() + "_" + from_A.name() + std::string("_cx")],
+      nu_on_from_B);
+  set(to_A["collision_frequencies"]
+          [to_A.name() + "_" + to_B.name() + std::string("_cx")],
+      nu_on_to_A);
+  set(to_B["collision_frequencies"]
+          [to_B.name() + "_" + to_A.name() + std::string("_cx")],
+      nu_on_to_B);
 }

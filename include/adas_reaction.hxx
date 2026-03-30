@@ -7,6 +7,7 @@
 
 #include <cstddef>
 #include <filesystem>
+#include <fmt/format.h>
 #include <string>
 #include <vector>
 
@@ -130,6 +131,20 @@ struct OpenADASChargeExchange : public ReactionBase {
                           {"density_source", "momentum_source", "energy_source"});
     substitutePermissions("sp", {from_A, from_B, to_A, to_B});
     substitutePermissions("from_ion", {from_A, from_B});
+
+    // Same pattern as HydrogenChargeExchange: downstream components (e.g.
+    // neutral_parallel_diffusion, braginskii_conduction) match on these names.
+    for (const auto& sp : {from_A, from_B, to_A, to_B}) {
+      setPermissions(readWrite(fmt::format("species:{}:collision_frequency", sp)));
+    }
+    setPermissions(readWrite(
+        fmt::format("species:{}:collision_frequencies:{}_{}_cx", from_A, from_A, from_B)));
+    setPermissions(readWrite(
+        fmt::format("species:{}:collision_frequencies:{}_{}_cx", from_B, from_B, from_A)));
+    setPermissions(readWrite(
+        fmt::format("species:{}:collision_frequencies:{}_{}_cx", to_A, to_A, to_B)));
+    setPermissions(readWrite(
+        fmt::format("species:{}:collision_frequencies:{}_{}_cx", to_B, to_B, to_A)));
   }
   /// Perform charge exchange
   ///
