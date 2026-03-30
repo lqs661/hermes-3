@@ -118,7 +118,8 @@ struct OpenADASChargeExchange : public ReactionBase {
                          std::string from_A, std::string from_B, std::string to_A,
                          std::string to_B, std::size_t level)
       : ReactionBase({readIfSet("species:{sp}:charge"), readOnly("species:{sp}:AA"),
-                      readOnly("species:{from_ion}:{val}"), readOnly("species:e:{e_val}"),
+                      readOnly("species:{from_ion}:{val}"),
+                      readOnly("species:{to_ion}:{val}"), readOnly("species:e:{e_val}"),
                       readWrite("species:{sp}:{w_val}")}),
         rate_coef((openadas_json_database_dir(alloptions) / rate_file).string(), level) {
     const Options& units = alloptions["units"];
@@ -131,6 +132,7 @@ struct OpenADASChargeExchange : public ReactionBase {
                           {"density_source", "momentum_source", "energy_source"});
     substitutePermissions("sp", {from_A, from_B, to_A, to_B});
     substitutePermissions("from_ion", {from_A, from_B});
+    substitutePermissions("to_ion", {to_A, to_B});
 
     // Same pattern as HydrogenChargeExchange: downstream components (e.g.
     // neutral_parallel_diffusion, braginskii_conduction) match on these names.
