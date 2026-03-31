@@ -166,17 +166,18 @@ This will create a diagnostic variable named ``Rc`` containing the radiation
 source in :math:`Wm^{-3}` where ``c`` is the species name.
 
 
-Several ADAS rates are provided: nitrogen, neon, argon, krypton, xenon and tungsten.
-The component names are ``fixed_fraction_carbon``, ``fixed_fraction_nitrogen``, ``fixed_fraction_neon``,
-``fixed_fraction_argon``, ``fixed_fraction_krypton``, ``fixed_fraction_xenon`` and ``fixed_fraction_tungsten``.
+Several ADAS rates are provided: boron, nitrogen, neon, argon, krypton, xenon and tungsten.
+The component names are ``fixed_fraction_carbon``, ``fixed_fraction_boron``, ``fixed_fraction_nitrogen``,
+``fixed_fraction_neon``, ``fixed_fraction_argon``, ``fixed_fraction_krypton``, ``fixed_fraction_xenon``
+and ``fixed_fraction_tungsten``.
 
-Each rate is in the form of a 10 coefficient 
+Most rates are in the form of a 10 coefficient 
 log-log polynomial fit of data obtained using the open source tool `radas <https://github.com/cfs-energy/radas>`_, except
 xenon and tungsten that use 15 and 20 coefficients respectively.
 The :math:`n {\tau}` parameter representing the density and residence time assumed in the radas 
 collisional-radiative model has been set to :math:`1\times 10^{20} \times 0.5ms` based on `David Moulton et al 2017 PPCF 59(6) <https://doi.org10.1088/1361-6587/aa6b13>`_.
 
-Each rate has an upper and lower bound beyond which the rate remains constant. 
+Each fitted rate has an upper and lower bound beyond which the rate remains constant.
 Please refer to the source code in :file:`fixed_fraction_radiation.hxx` for the coefficients and bounds used for each rate.
 
 In addition to the above rates, there are three simplified cooling curves for Argon: ``fixed_fraction_argon_simplified1``,

@@ -147,6 +147,35 @@ namespace {
     }
   };
 
+  /// Boron
+  struct Boron_adas{
+    BoutReal curve(BoutReal Te) {
+      BoutReal logT = log(Te);
+      BoutReal log_out = 0;
+
+      if (Te >= 1.5 and Te <= 100) {
+        log_out = log_out
+        -6.72013939e+01 * pow(logT, 0)
+        -3.90954847e+01 * pow(logT, 1)
+        +1.20065392e+02 * pow(logT, 2)
+        -1.94724211e+02 * pow(logT, 3)
+        +1.95093156e+02 * pow(logT, 4)
+        -1.26633792e+02 * pow(logT, 5)
+        +5.37183419e+01 * pow(logT, 6)
+        -1.47341369e+01 * pow(logT, 7)
+        +2.51383555e+00 * pow(logT, 8)
+        -2.42260929e-01 * pow(logT, 9)
+        +1.00647912e-02 * pow(logT, 10);
+        return exp(log_out);
+
+    } else if (Te < 1.5) {
+        return 3.78400258e-32;
+    } else {
+        return 7.29127229e-33;
+    }
+    }
+  };
+
   /// Argon simplified 1
   /// Based on the ADAS curve above but simplified as a linear interpolation
   /// between the LHS minimum, peak, bottom of RHS slope and final value at Te = 3000eV.
@@ -460,6 +489,9 @@ namespace {
     
   RegisterComponent<FixedFractionRadiation<Carbon_adas>>
     registercomponentfixedfractioncarbon("fixed_fraction_carbon");  
+
+  RegisterComponent<FixedFractionRadiation<Boron_adas>>
+    registercomponentfixedfractionboron("fixed_fraction_boron");
 
   RegisterComponent<FixedFractionRadiation<Nitrogen_adas>>
     registercomponentfixedfractionnitrogen("fixed_fraction_nitrogen");
